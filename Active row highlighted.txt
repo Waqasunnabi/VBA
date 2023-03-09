@@ -1,0 +1,10 @@
+Option Explicit
+
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+If Not Intersect(Target, Range("c3:f12")) Is Nothing Then
+    Range("a3") = Target.Row
+    
+    
+End If
+
+End Sub
