@@ -1,0 +1,66 @@
+Sub Bank_File()
+'
+' Bank_File Macro
+'
+' Keyboard Shortcut: Ctrl+Shift+Q
+'
+
+' Change Account No. Format
+
+    Range("C4").Select
+    ActiveCell.FormulaR1C1 = "'1031324691389003"
+    Range("C4").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.FillDown
+    
+' Copy and paste Beneficiary Nick Name
+
+    If Range("h4").Value = "UAE" Then
+
+    Range("D4").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+    Range("H4").Select
+    ActiveSheet.Paste
+    Range("D4").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Application.CutCopyMode = False
+    Selection.ClearContents
+    
+    Else
+    End If
+    
+' Change Date Format
+
+    Range("O4").Select
+    ActiveCell.FormulaR1C1 = "=TEXT(TODAY(),""DD/MM/YYYY"")"
+    Range("O4").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.FillDown
+    Range("F4").Select
+    
+' Rak Bank name reduce length
+
+    Columns("I:I").Select
+    Selection.Replace What:="RAK Bank - The National Bank of RAK PSC", _
+        Replacement:="The National Bank of RAK PSC", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False _
+        , FormulaVersion:=xlReplaceFormula2
+        
+        
+' Change Arab Bank PLC Bank Code
+        
+        Columns("M:M").Select
+    Selection.Replace What:="ARABAEAD", Replacement:="UARBAEAA", LookAt:= _
+        xlPart, SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+    
+' Change Arab Bank Bank Code
+        
+        Columns("M:M").Select
+    Selection.Replace What:="ARAIAEAD", Replacement:="ARABAEAD", LookAt:= _
+        xlPart, SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+        Range("B1").Select
+    
+End Sub

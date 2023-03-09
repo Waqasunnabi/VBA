@@ -1,0 +1,68 @@
+Private Sub CommandButton1_Click()
+
+'Admin1 All Sheet Visible
+
+If TextBox1.Text = Sheets("admin").Range("b2") And TextBox2.Text = Sheets("admin").Range("e2") Then
+MsgBox "welcome Admin1"
+
+Application.Visible = True
+ActiveWorkbook.Unprotect ("password")
+Sheets("admin").Visible = True
+Sheets("Inventory").Visible = True
+Sheets("Purchase").Visible = True
+Sheets("Sale").Visible = True
+Sheets("Income").Visible = True
+Sheets("Expense").Visible = True
+
+ActiveWorkbook.Protect Password:="password"
+Unload Me
+
+'Admin2 Inventory Sheet visible
+
+ElseIf TextBox1.Text = Sheets("admin").Range("b3") And TextBox2.Text = Sheets("admin").Range("e3") Then
+MsgBox "welcome Admin2"
+
+Application.Visible = True
+ActiveWorkbook.Unprotect ("password")
+Sheets("admin").Visible = False
+Sheets("Inventory").Visible = True
+Sheets("Purchase").Visible = False
+Sheets("Sale").Visible = False
+Sheets("Income").Visible = False
+Sheets("Expense").Visible = False
+
+'Admin 3 Income & Expense Sheet visible
+
+ActiveWorkbook.Protect Password:="password"
+Unload Me
+ElseIf TextBox1.Text = Sheets("admin").Range("b4") And TextBox2.Text = Sheets("admin").Range("e4") Then
+MsgBox "welcome Admin3"
+
+Application.Visible = True
+ActiveWorkbook.Unprotect ("password")
+Sheets("admin").Visible = False
+Sheets("Inventory").Visible = False
+Sheets("Purchase").Visible = False
+Sheets("Sale").Visible = False
+Sheets("Income").Visible = True
+Sheets("Expense").Visible = True
+
+ActiveWorkbook.Protect Password:="password"
+Unload Me
+
+Else
+MsgBox "Worng UserName & Password"
+
+
+End If
+End Sub
+
+Private Sub CommandButton2_Click()
+
+Unload Me
+
+End Sub
+
+Private Sub UserForm_Click()
+
+End Sub
