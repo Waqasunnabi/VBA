@@ -1,0 +1,76 @@
+Sub Datacopypaste()
+'
+' Macro1 Macro
+' Adyen Sheet
+    Sheets("Adyen Data").Select
+    Range("A3:E1000").Select
+    Selection.ClearContents
+    Range("M3:U1000").Select
+    Selection.ClearContents
+    Rows("3:1000").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    Sheets("Piv").Select
+    ActiveSheet.PivotTables("PivotTable1").PivotCache.Refresh
+    ActiveSheet.PivotTables("PivotTable1").PivotFields("Upload/Manual"). _
+        ClearAllFilters
+    ActiveSheet.PivotTables("PivotTable1").PivotFields("Upload/Manual"). _
+        CurrentPage = "Adyen-Upload"
+    Range("A4").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("Adyen Data").Select
+    Range("A3").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    ActiveCell.Select
+    Selection.End(xlDown).Select
+    ActiveCell.Rows("1:1").EntireRow.Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Delete Shift:=xlUp
+    Dim lastRow As Long
+    lastRow = Sheets("Adyen Data").Cells(Rows.Count, "E").End(xlUp).Row 'get last row in E column
+    Range("F4:H" & lastRow).FillDown
+    Range("V4:AE" & lastRow).FillDown
+' Checkout Sheet
+    Sheets("Checkout Data").Select
+    Range("A4:E1000").Select
+    Selection.ClearContents
+    Range("J4:V1000").Select
+    Selection.ClearContents
+    Rows("4:1000").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    Sheets("Piv").Select
+    ActiveSheet.PivotTables("PivotTable1").PivotCache.Refresh
+    ActiveSheet.PivotTables("PivotTable1").PivotFields("Upload/Manual"). _
+        ClearAllFilters
+    ActiveSheet.PivotTables("PivotTable1").PivotFields("Upload/Manual"). _
+        CurrentPage = "Checkout-Upload"
+    Range("A4").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("Checkout Data").Select
+    Range("A4").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    ActiveCell.Select
+    Selection.End(xlDown).Select
+    ActiveCell.Rows("1:1").EntireRow.Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Delete Shift:=xlUp
+    Dim checkoutlastrow As Long
+    checkoutlastrow = Sheets("Checkout Data").Cells(Rows.Count, "E").End(xlUp).Row 'get last row in E column
+    Range("F4:H" & checkoutlastrow).FillDown
+    Range("W4:AC" & checkoutlastrow).FillDown
+End Sub
