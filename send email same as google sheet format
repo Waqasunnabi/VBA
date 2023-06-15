@@ -1,0 +1,65 @@
+// @ts-nocheck
+function sendMailWithTable() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Table");
+  var MessageList = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Run").getRange("C2").getValue();
+  var bodyEmail = '<p style="font-size:20px">' + MessageList + '</p>';
+  var emaillist = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Run").getRange("A2").getValue();
+  var SubjectList = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Run").getRange("B2").getValue();
+  var lastcolumn = sheet.getLastColumn();
+  var lastrow = sheet.getLastRow();
+  var totalRows = lastrow;
+  var totalCols = lastcolumn;
+  /// Table Format
+  var TABLEFORMAT =
+    'cellspacing="0" cellpadding="0" dir="ltr" style="width:80%;font-size:10pt;font-family:Arial, sans-serif;border-collapse:collapse;color:#333;background-color:#fff;text-align:center;margin: 0 auto;"';
+  var CELLPARAMS = 'style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 10px;"';
+  var htmltable = '<table ' + TABLEFORMAT + '>';
+  /// Table Rows
+  var colVal = "";
+
+  for (var rowNo = 1; rowNo <= totalRows; rowNo++) {
+    htmltable += '<tr>';
+    for (var colNo = 1; colNo <= totalCols; colNo++) {
+      var cell = sheet.getRange(rowNo, colNo);
+      colVal = cell.getDisplayValue();
+      var fontColor = cell.getFontColor();
+      var backgroundColor = cell.getBackgrounds()[0][0];
+      var boldStatus = cell.getFontWeight() === "bold";
+
+      var cellStyle = 'style="padding: 10px;';
+      if (fontColor !== "#000000") {
+        cellStyle += ' color:' + fontColor + ';';
+      }
+      if (backgroundColor !== "#ffffff") {
+        cellStyle += ' background-color:' + backgroundColor + ';';
+      }
+      if (boldStatus) {
+        cellStyle += ' font-weight:bold;';
+      }
+      cellStyle += '"';
+
+      var mergedRanges = cell.getMergedRanges();
+      if (mergedRanges.length > 0 && mergedRanges[0].getCell(1, 1).getA1Notation() === cell.getA1Notation()) {
+        var numRows = mergedRanges[0].getNumRows();
+        var numCols = mergedRanges[0].getNumColumns();
+        htmltable += '<td ' + cellStyle + ' rowspan="' + numRows + '" colspan="' + numCols + '">' + colVal + '</td>';
+      } else {
+        htmltable += '<td ' + cellStyle + '>' + colVal + '</td>';
+      }
+    }
+    htmltable += '</tr>';
+  }
+  htmltable += '</table><br><br>';
+
+  /// Chart convert as an Image
+  const chartBlobs = new Array();
+  const emailImages = {};
+  const charts = sheet.getCharts();
+  charts.forEach(function (chart, i) {
+    chartBlobs[i] = chart.getAs("image/png");
+    emailImages["chart" + i] = chartBlobs[i];
+  });
+  /// Gmail send
+  bodyEmail += htmltable;
+  GmailApp.sendEmail(emaillist, SubjectList, "", { htmlBody: bodyEmail, inlineImages: emailImages });
+}
